@@ -1,0 +1,14 @@
+*.log
+
+/.vs
+/.idea
+/.vs
+node_modules/
+npm-debug.log
+bin/EnvironmentManager.js
+./bin/EnvironmentManager.js
+./.history
+
+package-lock.json
+.DS_Store
+logs/service.log

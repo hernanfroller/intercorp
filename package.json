@@ -1,0 +1,22 @@
+{
+  "name": "fitco-reservation-microservice",
+  "version": "1.0.0",
+  "description": "Fitco Reservation Microservice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/www"
+  },
+  "author": "Fitco S.A.C",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "log4js": "^4.0.2",
+    "moment": "^2.24.0",
+    "mysql": "^2.16.0"
+  },
+  "apidoc": {
+    "title": "Fitco Reservation Microservice",
+    "url" : "https://localhost:3000"
+  }
+}
