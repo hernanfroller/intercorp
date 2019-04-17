@@ -1,0 +1,4 @@
+exports.lang = {
+    'hi': 'Hi!'
+
+};

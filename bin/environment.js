@@ -19,5 +19,12 @@ module.exports = {
         database: process.env.DBS1_DB || 'fitcosys',
         multipleStatements: true
     },
-    LOG: '/var/log/microservice.log'
+    LOG: '/var/log/microservice.log',
+    SEND_GRID:
+    {
+        key: 'UG4zagtyTIOtzs_KGw2cgQ',
+        authorization: 'Bearer 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',
+        url:  'https://api.sendgrid.com/v3/mail/send',
+        active: true //Funcionalidades por validar
+    }
 }
