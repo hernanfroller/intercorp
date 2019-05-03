@@ -16,8 +16,8 @@ module.exports = {
     NUMBER_ZERO: 0,
     NUMBER_ONE: 1,
     NUMBER_TEN: 10,
-    SESSION_PERCENT = 0.25,
-    ERROR_FOREIGN_KEY_CONSTRAINT = 1451,
+    SESSION_PERCENT: 0.25,
+    ERROR_FOREIGN_KEY_CONSTRAINT: 1451,
 
     //SYSTEM STRING CONSTANTS
     STR_FITCO: 'Fitco',
@@ -27,9 +27,9 @@ module.exports = {
     STR_LOWERCASE_ABBREVIATION_IDENTIFIER: 'id',
     STR_LOWECASE_ABBREVIATION_DESCENDANT: 'desc',
     STR_NOT_SESSIONS_NOTIFICATION: 'NOTIFICACIÓN: Te has quedado sin sesiones',
-    STATUS_ACTIVE = '1',
-    STATUS_INACTIVE = '0',
-    MAILER_SENDER = 'no-reply@fitcoconnect.com',
+    STATUS_ACTIVE: '1',
+    STATUS_INACTIVE: '0',
+    MAILER_SENDER: 'no-reply@fitcoconnect.com',
 
     //SYSTEM MESAGGE CONSTANTS
     MSG_EXPIRED_TOKEN: 'El token ha expirado',
