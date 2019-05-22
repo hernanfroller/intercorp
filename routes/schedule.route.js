@@ -4,6 +4,12 @@ const express = require('express');
 const api = express.Router();
 const controller = require('../controllers/schedule.controller');
 
+/**
+ * @api {get} /fitco-establishments/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Lesson
+ */
 api.post('/', controller.setLesson);
 api.post('/:id/membership-lesson', controller.setMembershipSchedule);
 api.post('/lesson-record-and-membership', controller.addAndValidateMemberships);
