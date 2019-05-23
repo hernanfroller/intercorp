@@ -156,10 +156,10 @@ api.get('/service/by-personal/:id', controller.getServiceByPersonal);
 /**
  * @api {get} /schedule/service/by-lesson/:id Request All services by lesson
  * @apiVersion 1.0.0
- * @apiName getAllFeatures
+ * @apiName getServiceByLesson
  * @apiGroup Establishment
  *
- * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * @apiDescription Return all services by personal
  * 
  * @apiPermission Authorized users only
  * 
