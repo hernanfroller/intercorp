@@ -5,6 +5,7 @@ const api = express.Router();
 const controller = require('../controllers/schedule.controller');
 
 /**
+<<<<<<< HEAD
  * @api {post} /schedule/ Create lesson
  * @apiVersion 1.0.0
  * @apiName setLesson
@@ -29,6 +30,12 @@ const controller = require('../controllers/schedule.controller');
  * @apiParam {Number} referenceOcupancy       Unique id of the Ocupancy
  * @apiParam {Number} showOnApp               Show on app status
  * 
+=======
+ * @api {get} /fitco-establishments/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Lesson
+>>>>>>> 8ba48ca74ff911ec4ec54d181a8bd10408eb51e6
  */
 api.post('/', controller.setLesson);
 /**
