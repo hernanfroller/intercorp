@@ -4,20 +4,522 @@ const express = require('express');
 const api = express.Router();
 const controller = require('../controllers/schedule.controller');
 
+/**
+ * @api {post} /schedule/ Create lesson
+ * @apiVersion 1.0.0
+ * @apiName setLesson
+ * @apiGroup schedule
+ *
+ * @apiDescription Create a lesson of fitco solution.
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} disciplineId            Unique id of the discipline
+ * @apiParam {Number} establishmentId         Unique id of the establishment
+ * @apiParam {Number} special                 Special status
+ * @apiParam {String} days                    Data frame of days
+ * @apiParam {String} insUser                 Unique id of the user register
+ * @apiParam {String} startDate               Start date of the lesson
+ * @apiParam {String} untilDate               Finish date of the lesson
+ * @apiParam {String} startTime               Start time of the lesson
+ * @apiParam {String} endTime                 End date of the lesson
+ * @apiParam {Number} type                    Type of lesson
+ * @apiParam {Number} referenceInstructor     Unique id of the instructor
+ * @apiParam {Number} referenceRoomId         Unique id of the Room
+ * @apiParam {Number} referenceOcupancy       Unique id of the Ocupancy
+ * @apiParam {Number} showOnApp               Show on app status
+ * 
+ */
 api.post('/', controller.setLesson);
+/**
+ * @api {post} /schedule/:id/membership-lesson Register memberhips lesson
+ * @apiVersion 1.0.0
+ * @apiName setMembershipSchedule
+ * @apiGroup Schedule
+ *
+ * @apiDescription Create a membership lesson
+ * 
+ * @apiPermission Authorized users only
+ *
+ * @apiParam {String} status                Membership lesson status.
+ * @apiParam {Number} insUser               Unique id of the user register.
+ * 
+ */
 api.post('/:id/membership-lesson', controller.setMembershipSchedule);
+/**
+ * @api {post} /schedule//lesson-record-and-membership Create Lesson records and Memberships
+ * @apiVersion 1.0.0
+ * @apiName addAndValidateMemberships
+ * @apiGroup Schedule
+ *
+ * @apiDescription Create a lesson record and membership
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiParam {String} dateLesson:             Date time of the lesson record
+ * @apiParam {String} endTime                 End time of the lesson record
+ * @apiParam {Number} instructorId            Unique id of the instructor
+ * @apiParam {Number} lessonId                Unique id of the lesson
+ * @apiParam {Number} occupancy:              Ocupancy of the lesson record
+ * @apiParam {Number} romId:                  Unique id of the room
+ * @apiParam {Number} scheduleDisciplineId    Unique id of the schedule discipline
+ * @apiParam {String} startTime               Start time of the lesson record
+ * @apiParam {String} status                  Status of the lesson record
+ * @apiParam {Number} userId:                 Unique id of the user
+ * 
+ */
 api.post('/lesson-record-and-membership', controller.addAndValidateMemberships);
+/**
+ * @api {get} /schedule/by-establishment/:id Request All lesson by establishment
+ * @apiVersion 1.0.0
+ * @apiName getScheduleByEstablishment
+ * @apiGroup Schedule
+ *
+ * @apiDescription Return calendar lessons by establishment
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} id                Unique id of the establishment.
+ * 
+ * @apiSuccess {String} address: null
+ * @apiSuccess {String} alert: "0"
+ * @apiSuccess {Number} antifraud: null
+ * @apiSuccess {Date} birthDate: null
+ * @apiSuccess {String} categoryClientColor: null
+ * @apiSuccess {String} categoryClientId: null
+ * @apiSuccess {String} categoryClientName: null
+ * @apiSuccess {String} celPhone: null
+ * @apiSuccess {Number} clientIdPay: null
+ * @apiSuccess {Number} code: null
+ * @apiSuccess {Number} debt: null
+ * @apiSuccess {Date} disDate: null
+ * @apiSuccess {String} disUser: null
+ * @apiSuccess {Number} districtId: null
+ * @apiSuccess {String} dni: null
+ * @apiSuccess {String} email: "anapaula@fitco.com.pe"
+ * @apiSuccess {Number} emergencyName: null
+ * @apiSuccess {Number} emergencyPhone: null
+ * @apiSuccess {Number} establishmentId: 303
+ * @apiSuccess {String} establishmentName: "prueba Customer Success"
+ * @apiSuccess {String} gender: null
+ * @apiSuccess {Number} id: 558675
+ * @apiSuccess {Number} inFreeze: 0
+ * @apiSuccess {Date} insDate: "2019-04-09T20:02:40.000Z"
+ * @apiSuccess {Number} insUser: 1
+ * @apiSuccess {String} lastName: "Paula"
+ * @apiSuccess {String} name: "Ana"
+ * @apiSuccess {String} phone: null
+ * @apiSuccess {String} photo: null
+ * @apiSuccess {Number} roleId: 858
+ * @apiSuccess {String} roleName: "Super Usuario"
+ * @apiSuccess {String} status: "1"
+ * @apiSuccess {String} superAdmin: "0"
+ * @apiSuccess {String} typeUser: "1"
+ * @apiSuccess {Date} updDate: null
+ * @apiSuccess {String} updUser: null
+ * @apiSuccess {Number} userEstablishmentId: null
+ * 
+ */
 api.get('/by-establishment/:id', controller.getScheduleByEstablishment);
+/**
+ * @api {get} /schedule/service/by-personal/:id Request All services for a personal
+ * @apiVersion 1.0.0
+ * @apiName getServiceByPersonal
+ * @apiGroup Schedule
+ *
+ * @apiDescription Return all services of a personal
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} id                Unique id of the personal.
+ * 
+ * @apiSuccess {String} byDefault: "0"
+ * @apiSuccess {String} color: "#800080"
+ * @apiSuccess {String} description: null
+ * @apiSuccess {Date} disDate: null
+ * @apiSuccess {String} disUser: null
+ * @apiSuccess {Number} establishmentId: 303
+ * @apiSuccess {Number} id: 45991
+ * @apiSuccess {Date} insDate: "2019-03-07T00:00:00.000Z"
+ * @apiSuccess {String} insUser: 1
+ * @apiSuccess {Number} migrationId: null
+ * @apiSuccess {String} name: "Sesión de Nutrición"
+ * @apiSuccess {Number} price: 100
+ * @apiSuccess {String} status: "1"
+ * @apiSuccess {String} time: "01:00:00"
+ * @apiSuccess {String} type: "1"
+ * @apiSuccess {Date} updDate: null
+ * @apiSuccess {String} updUser: null
+ * 
+ */
 api.get('/service/by-personal/:id', controller.getServiceByPersonal);
+/**
+ * @api {get} /schedule/service/by-lesson/:id Request All services by lesson
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Establishment
+ *
+ * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {Number} id              Unique id of the feature.
+ * @apiSuccess {String} value           Value of the feature.
+ * @apiSuccess {String} description     Description of the feature.
+ * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
+ * @apiSuccess {Date} insDate           Creation date of the feature.
+ * @apiSuccess {String} insUser         Creation user of the feature.
+ * @apiSuccess {Date} updDate           Update date of the feature.
+ * @apiSuccess {String} updUser         Update user of the feature.
+ * @apiSuccess {Date} delDate           Delete date of the feature.
+ * @apiSuccess {String} delUser         Delete user of the feature.
+ * 
+ */
 api.get('/service/by-lesson/:id', controller.getServiceByLesson);
+/**
+ * @api {get} /schedule/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Establishment
+ *
+ * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {Number} id              Unique id of the feature.
+ * @apiSuccess {String} value           Value of the feature.
+ * @apiSuccess {String} description     Description of the feature.
+ * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
+ * @apiSuccess {Date} insDate           Creation date of the feature.
+ * @apiSuccess {String} insUser         Creation user of the feature.
+ * @apiSuccess {Date} updDate           Update date of the feature.
+ * @apiSuccess {String} updUser         Update user of the feature.
+ * @apiSuccess {Date} delDate           Delete date of the feature.
+ * @apiSuccess {String} delUser         Delete user of the feature.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *          "id":1,
+ *          "name":"Dashboard",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":1,
+ *          "shareModule":"N"
+ *      },
+ *      {
+ *          "id":2,"name":"Clases",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":2,
+ *          "shareModule":"N"
+ *      },
+ *      ...
+ *    ]
+ * @apiErrorExample {json} Features not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 api.get('/lessons-by-establishment/:id', controller.getLessonsByEstablishment);
+/**
+ * @api {get} /schedule/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Establishment
+ *
+ * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {Number} id              Unique id of the feature.
+ * @apiSuccess {String} value           Value of the feature.
+ * @apiSuccess {String} description     Description of the feature.
+ * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
+ * @apiSuccess {Date} insDate           Creation date of the feature.
+ * @apiSuccess {String} insUser         Creation user of the feature.
+ * @apiSuccess {Date} updDate           Update date of the feature.
+ * @apiSuccess {String} updUser         Update user of the feature.
+ * @apiSuccess {Date} delDate           Delete date of the feature.
+ * @apiSuccess {String} delUser         Delete user of the feature.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *          "id":1,
+ *          "name":"Dashboard",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":1,
+ *          "shareModule":"N"
+ *      },
+ *      {
+ *          "id":2,"name":"Clases",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":2,
+ *          "shareModule":"N"
+ *      },
+ *      ...
+ *    ]
+ * @apiErrorExample {json} Features not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 api.get('/lessons-by-type/:id', controller.getLessonsServices);
+/**
+ * @api {get} /schedule/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Establishment
+ *
+ * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {Number} id              Unique id of the feature.
+ * @apiSuccess {String} value           Value of the feature.
+ * @apiSuccess {String} description     Description of the feature.
+ * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
+ * @apiSuccess {Date} insDate           Creation date of the feature.
+ * @apiSuccess {String} insUser         Creation user of the feature.
+ * @apiSuccess {Date} updDate           Update date of the feature.
+ * @apiSuccess {String} updUser         Update user of the feature.
+ * @apiSuccess {Date} delDate           Delete date of the feature.
+ * @apiSuccess {String} delUser         Delete user of the feature.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *          "id":1,
+ *          "name":"Dashboard",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":1,
+ *          "shareModule":"N"
+ *      },
+ *      {
+ *          "id":2,"name":"Clases",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":2,
+ *          "shareModule":"N"
+ *      },
+ *      ...
+ *    ]
+ * @apiErrorExample {json} Features not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 api.get('/:establishmentId/by-user/:userEstablishmentId/by-service/:servId', controller.getScheduleByEstablishmentByUser);
+/**
+ * @api {get} /schedule/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Establishment
+ *
+ * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {Number} id              Unique id of the feature.
+ * @apiSuccess {String} value           Value of the feature.
+ * @apiSuccess {String} description     Description of the feature.
+ * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
+ * @apiSuccess {Date} insDate           Creation date of the feature.
+ * @apiSuccess {String} insUser         Creation user of the feature.
+ * @apiSuccess {Date} updDate           Update date of the feature.
+ * @apiSuccess {String} updUser         Update user of the feature.
+ * @apiSuccess {Date} delDate           Delete date of the feature.
+ * @apiSuccess {String} delUser         Delete user of the feature.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *          "id":1,
+ *          "name":"Dashboard",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":1,
+ *          "shareModule":"N"
+ *      },
+ *      {
+ *          "id":2,"name":"Clases",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":2,
+ *          "shareModule":"N"
+ *      },
+ *      ...
+ *    ]
+ * @apiErrorExample {json} Features not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 api.get('/by-services-day/:id', controller.getServicesByDay);
+/**
+ * @api {get} /schedule/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Establishment
+ *
+ * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {Number} id              Unique id of the feature.
+ * @apiSuccess {String} value           Value of the feature.
+ * @apiSuccess {String} description     Description of the feature.
+ * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
+ * @apiSuccess {Date} insDate           Creation date of the feature.
+ * @apiSuccess {String} insUser         Creation user of the feature.
+ * @apiSuccess {Date} updDate           Update date of the feature.
+ * @apiSuccess {String} updUser         Update user of the feature.
+ * @apiSuccess {Date} delDate           Delete date of the feature.
+ * @apiSuccess {String} delUser         Delete user of the feature.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *          "id":1,
+ *          "name":"Dashboard",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":1,
+ *          "shareModule":"N"
+ *      },
+ *      {
+ *          "id":2,"name":"Clases",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":2,
+ *          "shareModule":"N"
+ *      },
+ *      ...
+ *    ]
+ * @apiErrorExample {json} Features not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 api.get('/instructor-by-day/:id/:serviceId', controller.getInstructorByDay);
+/**
+ * @api {get} /schedule/getFeatures Request All Active Features information
+ * @apiVersion 1.0.0
+ * @apiName getAllFeatures
+ * @apiGroup Establishment
+ *
+ * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {Number} id              Unique id of the feature.
+ * @apiSuccess {String} value           Value of the feature.
+ * @apiSuccess {String} description     Description of the feature.
+ * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
+ * @apiSuccess {Date} insDate           Creation date of the feature.
+ * @apiSuccess {String} insUser         Creation user of the feature.
+ * @apiSuccess {Date} updDate           Update date of the feature.
+ * @apiSuccess {String} updUser         Update user of the feature.
+ * @apiSuccess {Date} delDate           Delete date of the feature.
+ * @apiSuccess {String} delUser         Delete user of the feature.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *          "id":1,
+ *          "name":"Dashboard",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":1,
+ *          "shareModule":"N"
+ *      },
+ *      {
+ *          "id":2,"name":"Clases",
+ *          "description":null,
+ *          "status":"1",
+ *          "icon":null,
+ *          "route":null,
+ *          "menuId":2,
+ *          "shareModule":"N"
+ *      },
+ *      ...
+ *    ]
+ * @apiErrorExample {json} Features not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 api.get('/times-by-lesson/:lessonId', controller.getTimesEnablesByLesson);
+/**
+ * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @apiVersion 1.0.0
+ * @apiName updDepartment
+ * @apiGroup Department
+ *
+ * @apiParam {Number} departmentId Department unique ID.
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {String} msg     Success message.
+ * @apiSuccess {String} title   Title success message.
+ */
 api.put('/cancel-lesson/:id', controller.changeStatus);
+/**
+ * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @apiVersion 1.0.0
+ * @apiName updDepartment
+ * @apiGroup Department
+ *
+ * @apiParam {Number} departmentId Department unique ID.
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {String} msg     Success message.
+ * @apiSuccess {String} title   Title success message.
+ */
 api.put('/lesson-update/:id', controller.lessonUpdate);
+/**
+ * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @apiVersion 1.0.0
+ * @apiName updDepartment
+ * @apiGroup Department
+ *
+ * @apiParam {Number} departmentId Department unique ID.
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {String} msg     Success message.
+ * @apiSuccess {String} title   Title success message.
+ */
 api.put('/unpaid/:id', controller.unpaidUpdate);
 api.delete('/:id/cancel-schedule/:membershipLessonId', controller.cancelMembershipSchedule);
 api.post('/unpaid', controller.saveUnpaid);
@@ -27,6 +529,18 @@ api.get('/lesson-app/:id/:serviceId', controller.getLessonsForApp);
 api.get('/:id/by-calendar', controller.getLessonRecordId);
 
 api.post('/calendar-day-lock', controller.setDayLock);
+/**
+ * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @apiVersion 1.0.0
+ * @apiName updDepartment
+ * @apiGroup Department
+ *
+ * @apiParam {Number} departmentId Department unique ID.
+ * @apiPermission Authorized users only
+ * 
+ * @apiSuccess {String} msg     Success message.
+ * @apiSuccess {String} title   Title success message.
+ */
 api.put('/:id/calendar-day-lock', controller.updDayLock);
 api.delete('/:id/calendar-day-lock', controller.delDayLockForDate);
 api.get('/:id/calendar-day-lock', controller.getDayLock);
