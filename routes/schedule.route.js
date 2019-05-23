@@ -164,83 +164,164 @@ api.get('/service/by-personal/:id', controller.getServiceByPersonal);
  * @api {get} /schedule/service/by-lesson/:id Request All services by lesson
  * @apiVersion 1.0.0
  * @apiName getServiceByLesson
- * @apiGroup Establishment
+ * @apiGroup Schedule
  *
- * @apiDescription Return all services by personal
+ * @apiDescription Return all services by lesson
  * 
  * @apiPermission Authorized users only
  * 
- * @apiSuccess {Number} id              Unique id of the feature.
- * @apiSuccess {String} value           Value of the feature.
- * @apiSuccess {String} description     Description of the feature.
- * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
- * @apiSuccess {Date} insDate           Creation date of the feature.
- * @apiSuccess {String} insUser         Creation user of the feature.
- * @apiSuccess {Date} updDate           Update date of the feature.
- * @apiSuccess {String} updUser         Update user of the feature.
- * @apiSuccess {Date} delDate           Delete date of the feature.
- * @apiSuccess {String} delUser         Delete user of the feature.
+ * @apiParam {Number} id                Unique id of the lesson.
+ * 
+ * @apiSuccess {String} byDefault: "0"
+ * @apiSuccess {String} color: "#800080"
+ * @apiSuccess {String} description: null
+ * @apiSuccess {Date} disDate: null
+ * @apiSuccess {Number} disUser: null
+ * @apiSuccess {Number} establishmentId: 303
+ * @apiSuccess {Number}  id: 45725
+ * @apiSuccess {Date} insDate: "2019-02-04T00:00:00.000Z"
+ * @apiSuccess {Number} insUser: 1
+ * @apiSuccess {Number} migrationId: null
+ * @apiSuccess {String} name: "Masajes"
+ * @apiSuccess {Number} price: 20
+ * @apiSuccess {String} status: "1"
+ * @apiSuccess {String} time: "00:30:00"
+ * @apiSuccess {String} type: "1"
+ * @apiSuccess {Date} updDate: null
+ * @apiSuccess {Number} updUser: null
  * 
  */
 api.get('/service/by-lesson/:id', controller.getServiceByLesson);
 /**
- * @api {get} /schedule/getFeatures Request All Active Features information
+ * @api {get} /schedule/lessons-by-establishment/:id Request All Lessons by establishment
  * @apiVersion 1.0.0
- * @apiName getAllFeatures
- * @apiGroup Establishment
+ * @apiName getLessonsByEstablishment
+ * @apiGroup Schedule
  *
- * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * @apiDescription Return all the exist lessons of establishment
  * 
  * @apiPermission Authorized users only
  * 
- * @apiSuccess {Number} id              Unique id of the feature.
- * @apiSuccess {String} value           Value of the feature.
- * @apiSuccess {String} description     Description of the feature.
- * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
- * @apiSuccess {Date} insDate           Creation date of the feature.
- * @apiSuccess {String} insUser         Creation user of the feature.
- * @apiSuccess {Date} updDate           Update date of the feature.
- * @apiSuccess {String} updUser         Update user of the feature.
- * @apiSuccess {Date} delDate           Delete date of the feature.
- * @apiSuccess {String} delUser         Delete user of the feature.
+ * @apiParam {Number} id                Unique id of the lesson.
+ * 
+ * @apiSuccess {Number} lessonWithReserves.allDay: 0
+ * @apiSuccess {String} lessonWithReserves.color: "#800080"
+ * @apiSuccess {Number} lessonWithReserves.disciplineId: 45725
+ * @apiSuccess {String} lessonWithReserves.dsciplineName: "Masajes"
+ * @apiSuccess {String} lessonWithReserves.end: "2019-05-18 07:00:00"
+ * @apiSuccess {Number} lessonWithReserves.id: 4065400
+ * @apiSuccess {String} lessonWithReserves.instructorId: "469345"
+ * @apiSuccess {String} lessonWithReserves.instructorName: "Jose  chavez"
+ * @apiSuccess {String} lessonWithReserves.instructorPhoto: null
+ * @apiSuccess {Number} lessonWithReserves.lessonId: 315052
+ * @apiSuccess {String} lessonWithReserves.membershipReserves: ""
+ * @apiSuccess {Number} lessonWithReserves.occupancy: 10
+ * @apiSuccess {Number} lessonWithReserves.reserves: 1
+ * @apiSuccess {Number} lessonWithReserves.romId: 1227
+ * @apiSuccess {String} lessonWithReserves.romName: "San isidro"
+ * @apiSuccess {String} lessonWithReserves.roomType: "0"
+ * @apiSuccess {String} lessonWithReserves.start: "2019-05-18 06:30:00"
+ * @apiSuccess {String} lessonWithReserves.status: "0"
+ * @apiSuccess {String} lessonWithReserves.title: "Masajes"
+ * @apiSuccess {String} lessonWithReserves.type: "1"
+ * @apiSuccess {String} lessonWithReserves.unpaidReserves: "viernes modo cine viernes modo cine"
+ * @apiSuccess {String} lessonWithReserves.url: "/admin/#/lessons/4037931"
+ * 
+ * @apiSuccess {Number} lessonWithoutReserves.allDay: 0
+ * @apiSuccess {String} lessonWithoutReserves.color: "#800080"
+ * @apiSuccess {Number} lessonWithoutReserves.disciplineId: 45725
+ * @apiSuccess {String} lessonWithoutReserves.dsciplineName: "Masajes"
+ * @apiSuccess {String} lessonWithoutReserves.end: "2019-05-18 07:00:00"
+ * @apiSuccess {Number} lessonWithoutReserves.id: 4065400
+ * @apiSuccess {String} lessonWithoutReserves.instructorId: "469345"
+ * @apiSuccess {String} lessonWithoutReserves.instructorName: "Jose  chavez"
+ * @apiSuccess {String} lessonWithoutReserves.instructorPhoto: null
+ * @apiSuccess {Number} lessonWithoutReserves.lessonId: 315052
+ * @apiSuccess {String} lessonWithoutReserves.membershipReserves: ""
+ * @apiSuccess {Number} lessonWithoutReserves.occupancy: 10
+ * @apiSuccess {Number} lessonWithoutReserves.reserves: 1
+ * @apiSuccess {Number} lessonWithoutReserves.romId: 1227
+ * @apiSuccess {String} lessonWithoutReserves.romName: "San isidro"
+ * @apiSuccess {String} lessonWithoutReserves.roomType: "0"
+ * @apiSuccess {String} lessonWithoutReserves.start: "2019-05-18 06:30:00"
+ * @apiSuccess {String} lessonWithoutReserves.status: "0"
+ * @apiSuccess {String} lessonWithoutReserves.title: "Masajes"
+ * @apiSuccess {String} lessonWithoutReserves.type: "1"
+ * @apiSuccess {String} lessonWithoutReserves.unpaidReserves: "viernes modo cine viernes modo cine"
+ * @apiSuccess {String} lessonWithoutReserves.url: "/admin/#/lessons/4037931"
  * 
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
- *    [
- *      {
- *          "id":1,
- *          "name":"Dashboard",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":1,
- *          "shareModule":"N"
- *      },
- *      {
- *          "id":2,"name":"Clases",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":2,
- *          "shareModule":"N"
- *      },
- *      ...
- *    ]
- * @apiErrorExample {json} Features not found
+ *    {
+ *          "lessonWithReserves":
+ *              [
+ *                  {
+ *                      "id":4065400,
+ *                      "lessonId":315052,
+ *                      "type":"1",
+ *                      "title":"Masajes",
+ *                      "start":"2019-05-18 06:30:00",
+ *                      "end":"2019-05-18 07:00:00",
+ *                      "color":"#800080",
+ *                      "url":"/admin/#/lessons/4065400",
+ *                      "allDay":0,"disciplineId":45725,
+ *                      "dsciplineName":"Masajes",
+ *                      "occupancy":10,
+ *                      "reserves":1,
+ *                      "unpaidReserves":"viernes modo cine viernes modo cine",
+ *                      "membershipReserves":"",
+ *                      "romId":1227,
+ *                      "romName":"San isidro",
+ *                      "instructorName":"Jose  chavez",
+ *                      "status":"0","instructorPhoto":null,
+ *                      "instructorId":"469345",
+ *                      "roomType":"0"
+ *                  },
+ *                  ...
+ *              ],
+ *          "lessonWithoutReserves":
+ *              [
+ *                  {
+ *                      "id":3995814,
+ *                      "lessonId":297094,
+ *                      "type":"1",
+ *                      "title":"Sesión de Nutrición",
+ *                      "start":"2019-05-13 09:00:00",
+ *                      "end":"2019-05-13 10:00:00",
+ *                      "color":"#800080",
+ *                      "url":"/admin/#/lessons/3995814",
+ *                      "allDay":0,
+ *                      "disciplineId":45991,
+ *                      "dsciplineName":"Sesión de Nutrición",
+ *                      "occupancy":1,
+ *                      "reserves":0,
+ *                      "unpaidReserves":"",
+ *                      "membershipReserves":"",
+ *                      "romId":998,
+ *                      "romName":"Salón Pilates",
+ *                      "instructorName":"Alexandra Rivera",
+ *                      "status":"0",
+ *                      "instructorPhoto":"https://s3-us-west-2.amazonaws.com/fitco-storage/profiles/profile-5295787DXzN.png",
+ *                      "instructorId":"529578",
+ *                      "roomType":"0"
+ *                  },
+ *                  ...
+ *              ]
+ *    }
+ * 
+ * @apiErrorExample {json} Schedule not found
  *    HTTP/1.1 404 Not Found
  * @apiErrorExample {json} Find error
  *    HTTP/1.1 500 Internal Server Error
  */
 api.get('/lessons-by-establishment/:id', controller.getLessonsByEstablishment);
 /**
- * @api {get} /schedule/getFeatures Request All Active Features information
+ * @api {get} /schedule/lessons-by-type/:id Request All Lessons By Type
  * @apiVersion 1.0.0
- * @apiName getAllFeatures
- * @apiGroup Establishment
+ * @apiName getLessonsServices
+ * @apiGroup Schedule
  *
- * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * @apiDescription Return all lessons by type
  * 
  * @apiPermission Authorized users only
  * 
