@@ -8,7 +8,7 @@ const controller = require('../controllers/schedule.controller');
  * @api {post} /schedule/ Create lesson
  * @apiVersion 1.0.0
  * @apiName setLesson
- * @apiGroup schedule
+ * @apiGroup Schedule
  *
  * @apiDescription Create a lesson of fitco solution.
  * 
@@ -318,6 +318,8 @@ api.get('/lessons-by-establishment/:id', controller.getLessonsByEstablishment);
  * 
  * @apiPermission Authorized users only
  * 
+ * @apiParam {Number} id                Unique id of the type lesson.
+ * 
  * @apiSuccess {Number} id              Unique id of the feature.
  * @apiSuccess {String} value           Value of the feature.
  * @apiSuccess {String} description     Description of the feature.
@@ -363,7 +365,7 @@ api.get('/lessons-by-type/:id', controller.getLessonsServices);
  * @api {get} /schedule/getFeatures Request All Active Features information
  * @apiVersion 1.0.0
  * @apiName getAllFeatures
- * @apiGroup Establishment
+ * @apiGroup Schedule
  *
  * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
  * 
@@ -414,7 +416,7 @@ api.get('/:establishmentId/by-user/:userEstablishmentId/by-service/:servId', con
  * @api {get} /schedule/getFeatures Request All Active Features information
  * @apiVersion 1.0.0
  * @apiName getAllFeatures
- * @apiGroup Establishment
+ * @apiGroup Schedule
  *
  * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
  * 
@@ -465,7 +467,7 @@ api.get('/by-services-day/:id', controller.getServicesByDay);
  * @api {get} /schedule/getFeatures Request All Active Features information
  * @apiVersion 1.0.0
  * @apiName getAllFeatures
- * @apiGroup Establishment
+ * @apiGroup Schedule
  *
  * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
  * 
@@ -516,7 +518,7 @@ api.get('/instructor-by-day/:id/:serviceId', controller.getInstructorByDay);
  * @api {get} /schedule/getFeatures Request All Active Features information
  * @apiVersion 1.0.0
  * @apiName getAllFeatures
- * @apiGroup Establishment
+ * @apiGroup Schedule
  *
  * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
  * 
@@ -567,7 +569,7 @@ api.get('/times-by-lesson/:lessonId', controller.getTimesEnablesByLesson);
  * @api {put} /fitco-departments/update/:departmentId Update Department information
  * @apiVersion 1.0.0
  * @apiName updDepartment
- * @apiGroup Department
+ * @apiGroup Schedule
  *
  * @apiParam {Number} departmentId Department unique ID.
  * @apiPermission Authorized users only
@@ -580,7 +582,7 @@ api.put('/cancel-lesson/:id', controller.changeStatus);
  * @api {put} /fitco-departments/update/:departmentId Update Department information
  * @apiVersion 1.0.0
  * @apiName updDepartment
- * @apiGroup Department
+ * @apiGroup Schedule
  *
  * @apiParam {Number} departmentId Department unique ID.
  * @apiPermission Authorized users only
@@ -593,7 +595,7 @@ api.put('/lesson-update/:id', controller.lessonUpdate);
  * @api {put} /fitco-departments/update/:departmentId Update Department information
  * @apiVersion 1.0.0
  * @apiName updDepartment
- * @apiGroup Department
+ * @apiGroup Schedule
  *
  * @apiParam {Number} departmentId Department unique ID.
  * @apiPermission Authorized users only
@@ -614,7 +616,7 @@ api.post('/calendar-day-lock', controller.setDayLock);
  * @api {put} /fitco-departments/update/:departmentId Update Department information
  * @apiVersion 1.0.0
  * @apiName updDepartment
- * @apiGroup Department
+ * @apiGroup Schedule
  *
  * @apiParam {Number} departmentId Department unique ID.
  * @apiPermission Authorized users only
