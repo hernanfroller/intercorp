@@ -590,48 +590,43 @@ api.get('/by-services-day/:id', controller.getServicesByDay);
 /**
  * @api {get} /schedule/instructor-by-day/:id/:serviceId Request all instructors by service in day.
  * @apiVersion 1.0.0
- * @apiName getAllFeatures
+ * @apiName getInstructorByDay
  * @apiGroup Schedule
  *
- * @apiDescription Return all instructors abaible for a service in day.
+ * @apiDescription Return all instructors avaible for a service in day.
  * 
  * @apiPermission Authorized users only
  * 
- * @apiParam {Number} id                Unique id of the establishment.
- * @apiParam {Number} serviceId         Unique id of the service.
+ * @apiParam {Number} id                    Unique id of the establishment.
+ * @apiParam {Number} serviceId             Unique id of the service.
  * 
- * @apiSuccess {Number} id              Unique id of the feature.
- * @apiSuccess {String} value           Value of the feature.
- * @apiSuccess {String} description     Description of the feature.
- * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
- * @apiSuccess {Date} insDate           Creation date of the feature.
- * @apiSuccess {String} insUser         Creation user of the feature.
- * @apiSuccess {Date} updDate           Update date of the feature.
- * @apiSuccess {String} updUser         Update user of the feature.
- * @apiSuccess {Date} delDate           Delete date of the feature.
- * @apiSuccess {String} delUser         Delete user of the feature.
+ * @apiSuccess {String} endTime             End time of the availability.
+ * @apiSuccess {Number} id                  Unique id of the availability.
+ * @apiSuccess {String} instructorName      Instructor name of the service.
+ * @apiSuccess {Number} intructorId         Unique id of the instructor.
+ * @apiSuccess {String} name                Name of the service.
+ * @apiSuccess {Number} ocupancy            Ocuppancy of the service.
+ * @apiSuccess {Number} price               Price of the service.
+ * @apiSuccess {Number} roomId              Unique id of the room.
+ * @apiSuccess {String} roomName            Room name of the service.
+ * @apiSuccess {Number} serviceId           Unique id of the service.
+ * @apiSuccess {String} startTime           End time of the availability.
  * 
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    [
  *      {
- *          "id":1,
- *          "name":"Dashboard",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":1,
- *          "shareModule":"N"
- *      },
- *      {
- *          "id":2,"name":"Clases",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":2,
- *          "shareModule":"N"
+ *          endTime: "20:00:00",
+ *          id: 297094,
+ *          instructorName: "Jose  chavez",
+ *          intructorId: 469345,
+ *          name: "Masajes",
+ *          ocupancy: 1,
+ *          price: 20,
+ *          roomId: 998,
+ *          roomName: "Salón Pilates",
+ *          serviceId: 45725,
+ *          startTime: "09:00:00"
  *      },
  *      ...
  *    ]
@@ -672,43 +667,83 @@ api.get('/instructor-by-day/:id/:serviceId', controller.getInstructorByDay);
  */
 api.get('/times-by-lesson/:lessonId', controller.getTimesEnablesByLesson);
 /**
- * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @api {put} /schedule/cancel-lesson/:id Update lesson for cancellation
  * @apiVersion 1.0.0
- * @apiName updDepartment
+ * @apiName changeStatus
  * @apiGroup Schedule
  *
- * @apiParam {Number} departmentId Department unique ID.
+ * @apiDescription Modify a lesson that needs to be canceled.
  * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} id        Unique id of the lesson.
  * 
  * @apiSuccess {String} msg     Success message.
  * @apiSuccess {String} title   Title success message.
- * HASTA AQUI
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "msg":"GLOBAL.OK",
+ *      "title":"GLOBAL.EXITO"
+ *    }
+ * 
+ * @apiErrorExample {json} Schedule not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ * 
  */
 api.put('/cancel-lesson/:id', controller.changeStatus);
 /**
- * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @api {put} /schedule/lesson-update/:id Update lesson information
  * @apiVersion 1.0.0
- * @apiName updDepartment
+ * @apiName lessonUpdate
  * @apiGroup Schedule
  *
- * @apiParam {Number} departmentId Department unique ID.
  * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} id        Unique id of the lesson
  * 
  * @apiSuccess {String} msg     Success message.
  * @apiSuccess {String} title   Title success message.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "msg":"GLOBAL.OK",
+ *      "title":"GLOBAL.EXITO"
+ *    }
+ * 
+ * @apiErrorExample {json} Schedule not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
  */
 api.put('/lesson-update/:id', controller.lessonUpdate);
 /**
- * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @api {put} /schedule/unpaid/:id Update unpaid lesson information
  * @apiVersion 1.0.0
- * @apiName updDepartment
+ * @apiName unpaidUpdate
  * @apiGroup Schedule
  *
- * @apiParam {Number} departmentId Department unique ID.
  * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} id        Unique id of the unpaid lesson.
  * 
  * @apiSuccess {String} msg     Success message.
  * @apiSuccess {String} title   Title success message.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "msg":"GLOBAL.OK",
+ *      "title":"GLOBAL.EXITO"
+ *    }
+ * 
+ * @apiErrorExample {json} Unpaid lesson not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
  */
 api.put('/unpaid/:id', controller.unpaidUpdate);
 api.delete('/:id/cancel-schedule/:membershipLessonId', controller.cancelMembershipSchedule);
@@ -720,13 +755,24 @@ api.get('/:id/by-calendar', controller.getLessonRecordId);
 
 api.post('/calendar-day-lock', controller.setDayLock);
 /**
- * @api {put} /fitco-departments/update/:departmentId Update Department information
+ * @api {put} /schedule/:id/calendar-day-lock Update schedule lock information
  * @apiVersion 1.0.0
- * @apiName updDepartment
+ * @apiName updDayLock
  * @apiGroup Schedule
  *
- * @apiParam {Number} departmentId Department unique ID.
  * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} id                    Unique id of the schedule lock.
+ * @apiParam {Number} fromDate              Start date of the schedule lock.
+ * @apiParam {Number} toDate                End date of the schedule lock.
+ * @apiParam {Number} allDay                Status to set schedule to all day. ('0': inactive, '1': active)
+ * @apiParam {Number} repeatOption          Status to set schedule to repeat rule. ('0': inactive, '1': active)
+ * @apiParam {Number} eachOption            Status to active to repeat schedule lock for a number of times.
+ * @apiParam {Number} eachNumber            Number of times to repeat schedule lock.
+ * @apiParam {Number} inDay                 Days to repeat schedule lock. (LU,MA,JU)
+ * @apiParam {Number} forever               Status to repear schedule lock forever. ('0': inactive, '1': active)
+ * @apiParam {Number} finishDate            Finish date to repeat schedule lock.
+ * @apiParam {Number} updUser               Unique id of the user update schedule lock.
  * 
  * @apiSuccess {String} msg     Success message.
  * @apiSuccess {String} title   Title success message.
