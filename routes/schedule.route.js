@@ -10,7 +10,7 @@ const controller = require('../controllers/schedule.controller');
  * @apiName setLesson
  * @apiGroup Schedule
  *
- * @apiDescription Create a lesson of fitco solution.
+ * @apiDescription Create a lesson that is visible from the calendar of the fitco solution.
  * 
  * @apiPermission Authorized users only
  * 
@@ -47,12 +47,12 @@ api.post('/', controller.setLesson);
  */
 api.post('/:id/membership-lesson', controller.setMembershipSchedule);
 /**
- * @api {post} /schedule//lesson-record-and-membership Create Lesson records and Memberships
+ * @api {post} /schedule/lesson-record-and-membership Create Lesson records and Memberships
  * @apiVersion 1.0.0
  * @apiName addAndValidateMemberships
  * @apiGroup Schedule
  *
- * @apiDescription Create a lesson record and membership
+ * @apiDescription Create a service availability for scheduling.
  * 
  * @apiPermission Authorized users only
  * 
