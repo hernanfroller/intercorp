@@ -588,14 +588,17 @@ api.get('/:establishmentId/by-user/:userEstablishmentId/by-service/:servId', con
  */
 api.get('/by-services-day/:id', controller.getServicesByDay);
 /**
- * @api {get} /schedule/getFeatures Request All Active Features information
+ * @api {get} /schedule/instructor-by-day/:id/:serviceId Request all instructors by service in day.
  * @apiVersion 1.0.0
  * @apiName getAllFeatures
  * @apiGroup Schedule
  *
- * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * @apiDescription Return all instructors abaible for a service in day.
  * 
  * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} id                Unique id of the establishment.
+ * @apiParam {Number} serviceId         Unique id of the service.
  * 
  * @apiSuccess {Number} id              Unique id of the feature.
  * @apiSuccess {String} value           Value of the feature.
@@ -639,7 +642,7 @@ api.get('/by-services-day/:id', controller.getServicesByDay);
  */
 api.get('/instructor-by-day/:id/:serviceId', controller.getInstructorByDay);
 /**
- * @api {get} /schedule/getFeatures Request All Active Features information
+ * @api {get} /schedule/times-by-lesson/:lessonId Request times on a lesson
  * @apiVersion 1.0.0
  * @apiName getAllFeatures
  * @apiGroup Schedule
