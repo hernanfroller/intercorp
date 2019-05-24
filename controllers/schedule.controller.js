@@ -78,7 +78,7 @@ function setMembershipSchedule(req, res, next) {
             insUser: req.body.userId
         };
     if (req.query['admin']) {
-        body.status = '1';
+        body.status = config.constants.STATUS_ACTIVE;
     }
     services.lessons.getCategoryClients(req.body.userId).then(function (categoryData) {
         services.memberships.getMembershipsByUser(req.body.userId, id)

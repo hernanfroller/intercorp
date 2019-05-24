@@ -29,6 +29,18 @@ const controller = require('../controllers/schedule.controller');
  * @apiParam {Number} referenceOcupancy       Unique id of the Ocupancy
  * @apiParam {Number} showOnApp               Show on app status
  * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "msg":"GLOBAL.OK",
+ *      "title":"GLOBAL.EXITO"
+ *    }
+ * 
+ * @apiErrorExample {json} Schedule not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ * 
  */
 api.post('/', controller.setLesson);
 /**
@@ -43,6 +55,18 @@ api.post('/', controller.setLesson);
  *
  * @apiParam {String} status                Membership lesson status.
  * @apiParam {Number} insUser               Unique id of the user register.
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "msg":"GLOBAL.OK",
+ *      "title":"GLOBAL.EXITO"
+ *    }
+ * 
+ * @apiErrorExample {json} Schedule not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
  * 
  */
 api.post('/:id/membership-lesson', controller.setMembershipSchedule);
@@ -64,8 +88,20 @@ api.post('/:id/membership-lesson', controller.setMembershipSchedule);
  * @apiParam {Number} romId:                  Unique id of the room
  * @apiParam {Number} scheduleDisciplineId    Unique id of the schedule discipline
  * @apiParam {String} startTime               Start time of the lesson record
- * @apiParam {String} status                  Status of the lesson record
+ * @apiParam {String} status                  Status of the lesson record ('0': con asistencia, '1': sin asistencia)
  * @apiParam {Number} userId:                 Unique id of the user
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "msg":"GLOBAL.OK",
+ *      "title":"GLOBAL.EXITO"
+ *    }
+ * 
+ * @apiErrorExample {json} Schedule not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
  * 
  */
 api.post('/lesson-record-and-membership', controller.addAndValidateMemberships);
@@ -75,7 +111,7 @@ api.post('/lesson-record-and-membership', controller.addAndValidateMemberships);
  * @apiName getScheduleByEstablishment
  * @apiGroup Schedule
  *
- * @apiDescription Return calendar lessons by establishment
+ * @apiDescription Return all calendar lessons by establishment
  * 
  * @apiPermission Authorized users only
  * 
@@ -131,26 +167,54 @@ api.get('/by-establishment/:id', controller.getScheduleByEstablishment);
  * 
  * @apiPermission Authorized users only
  * 
- * @apiParam {Number} id                Unique id of the personal.
+ * @apiParam {Number} id                            Unique id of the personal
  * 
  * @apiSuccess {String} byDefault: "0"
- * @apiSuccess {String} color: "#800080"
- * @apiSuccess {String} description: null
- * @apiSuccess {Date} disDate: null
- * @apiSuccess {String} disUser: null
- * @apiSuccess {Number} establishmentId: 303
- * @apiSuccess {Number} id: 45991
- * @apiSuccess {Date} insDate: "2019-03-07T00:00:00.000Z"
- * @apiSuccess {String} insUser: 1
- * @apiSuccess {Number} migrationId: null
- * @apiSuccess {String} name: "Sesión de Nutrición"
- * @apiSuccess {Number} price: 100
- * @apiSuccess {String} status: "1"
- * @apiSuccess {String} time: "01:00:00"
- * @apiSuccess {String} type: "1"
- * @apiSuccess {Date} updDate: null
- * @apiSuccess {String} updUser: null
+ * @apiSuccess {String} color                       Color hexadecimal of the lesson in calendar
+ * @apiSuccess {String} description                 Description of the lesson
+ * @apiSuccess {Date} disDate                       Date of disabled lesson
+ * @apiSuccess {String} disUser                     Unique id of the user who disabled the lesson
+ * @apiSuccess {Number} establishmentId             Unique id of the establishment
+ * @apiSuccess {Number} id                          Unique id of the lesson
+ * @apiSuccess {Date} insDate                       Creation date of the lesson
+ * @apiSuccess {String} insUser                     Unique id of the user who create the lesson
+ * @apiSuccess {Number} migrationId                 Unique id of the migration
+ * @apiSuccess {String} name                        Name of the lesson
+ * @apiSuccess {Number} price                       Price of the lesson
+ * @apiSuccess {String} status                      Status of the lesson ('0', '1')
+ * @apiSuccess {String} time                        Hour of the lesson
+ * @apiSuccess {String} type                        Lesson type ('0', '1')
+ * @apiSuccess {Date} updDate                       Date of the lesson update
+ * @apiSuccess {String} updUser                     Unique id of the user who update the lesson
  * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    [
+ *      {
+ *          byDefault: "0"
+ *          color: "#800080"
+ *          description: null
+ *          disDate: null
+ *          disUser: null
+ *          establishmentId: 303
+ *          id: 45991
+ *          insDate: "2019-03-07T00:00:00.000Z"
+ *          insUser: 1
+ *          migrationId: null
+ *          name: "Sesión de Nutrición"
+ *          price: 100
+ *          status: "1"
+ *          time: "01:00:00"
+ *          type: "1"
+ *          updDate: null
+ *          updUser: null
+ *      },
+ *      ...
+ *    ]
+ * @apiErrorExample {json} Services not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
  */
 api.get('/service/by-personal/:id', controller.getServiceByPersonal);
 /**
@@ -159,7 +223,7 @@ api.get('/service/by-personal/:id', controller.getServiceByPersonal);
  * @apiName getServiceByLesson
  * @apiGroup Schedule
  *
- * @apiDescription Return all services by lesson
+ * @apiDescription Return all services by lesson.
  * 
  * @apiPermission Authorized users only
  * 
@@ -191,7 +255,7 @@ api.get('/service/by-lesson/:id', controller.getServiceByLesson);
  * @apiName getLessonsByEstablishment
  * @apiGroup Schedule
  *
- * @apiDescription Return all the exist lessons of establishment
+ * @apiDescription Return all the exist lessons of establishment.
  * 
  * @apiPermission Authorized users only
  * 
@@ -314,60 +378,89 @@ api.get('/lessons-by-establishment/:id', controller.getLessonsByEstablishment);
  * @apiName getLessonsServices
  * @apiGroup Schedule
  *
- * @apiDescription Return all lessons by type
+ * @apiDescription Return all lessons by lesson type.
  * 
  * @apiPermission Authorized users only
  * 
- * @apiParam {Number} id                Unique id of the type lesson.
+ * @apiParam {Number} id                Unique id of the lesson type.
  * 
- * @apiSuccess {Number} id              Unique id of the feature.
- * @apiSuccess {String} value           Value of the feature.
- * @apiSuccess {String} description     Description of the feature.
- * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
- * @apiSuccess {Date} insDate           Creation date of the feature.
- * @apiSuccess {String} insUser         Creation user of the feature.
- * @apiSuccess {Date} updDate           Update date of the feature.
- * @apiSuccess {String} updUser         Update user of the feature.
- * @apiSuccess {Date} delDate           Delete date of the feature.
- * @apiSuccess {String} delUser         Delete user of the feature.
+ * @apiSuccess {Number} days: Array of days enabled for the lesson [0,0,0,0,0,0,1] (starts on monday, 0 inactive, 1 active)
+ * @apiSuccess {Number} disDate: null
+ * @apiSuccess {Number} disUser: null
+ * @apiSuccess {Number} disciplineId: null
+ * @apiSuccess {Number} disciplineName: "Masajes"
+ * @apiSuccess {Number} endDate: "18/05/2019"
+ * @apiSuccess {Number} endTime: "07:00:00"
+ * @apiSuccess {Number} establishmentId: 303
+ * @apiSuccess {Number} id: 315052
+ * @apiSuccess {Number} insDate: "2019-05-21T21:18:08.000Z"
+ * @apiSuccess {Number} insUser: 1
+ * @apiSuccess {Number} instructor: "Jose  chavez"
+ * @apiSuccess {Number} planDisponibilityId: null
+ * @apiSuccess {Number} referenceEndTime: null
+ * @apiSuccess {Number} referenceInstructor: 469345
+ * @apiSuccess {Number} referenceOcupancy: 10
+ * @apiSuccess {Number} referenceRoomId: 1227
+ * @apiSuccess {Number} referenceStartTime: null
+ * @apiSuccess {Number} roomType: "0"
+ * @apiSuccess {Number} showOnApp: "1"
+ * @apiSuccess {Number} special: ""
+ * @apiSuccess {Number} startDate: "18/05/2019"
+ * @apiSuccess {Number} startTime: "06:00:00"
+ * @apiSuccess {Number} status: "1"
+ * @apiSuccess {Number} type: "1"
+ * @apiSuccess {Number} untilDate: "2019-05-18T00:00:00.000Z"
+ * @apiSuccess {Number} updDate: null
+ * @apiSuccess {Number} updUser: null
  * 
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    [
  *      {
- *          "id":1,
- *          "name":"Dashboard",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":1,
- *          "shareModule":"N"
- *      },
- *      {
- *          "id":2,"name":"Clases",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":2,
- *          "shareModule":"N"
+ *          days: "[0,0,0,0,0,0,1]"
+ *          disDate: null
+ *          disUser: null
+ *          disciplineId: null
+ *          disciplineName: "Masajes"
+ *          endDate: "18/05/2019"
+ *          endTime: "07:00:00"
+ *          establishmentId: 303
+ *          id: 315052
+ *          insDate: "2019-05-21T21:18:08.000Z"
+ *          insUser: 1
+ *          instructor: "Jose  chavez"
+ *          planDisponibilityId: null
+ *          referenceEndTime: null
+ *          referenceInstructor: 469345
+ *          referenceOcupancy: 10
+ *          referenceRoomId: 1227
+ *          referenceStartTime: null
+ *          roomType: "0"
+ *          showOnApp: "1"
+ *          special: ""
+ *          startDate: "18/05/2019"
+ *          startTime: "06:00:00"
+ *          status: "1"
+ *          type: "1"
+ *          untilDate: "2019-05-18T00:00:00.000Z"
+ *          updDate: null
+ *          updUser: null
  *      },
  *      ...
  *    ]
- * @apiErrorExample {json} Features not found
+ * @apiErrorExample {json} lesson not found
  *    HTTP/1.1 404 Not Found
  * @apiErrorExample {json} Find error
  *    HTTP/1.1 500 Internal Server Error
  */
 api.get('/lessons-by-type/:id', controller.getLessonsServices);
 /**
- * @api {get} /schedule/getFeatures Request All Active Features information
+ * @api {get} /:establishmentId/by-user/:userEstablishmentId/by-service/:servId Request all Schedules by user and service.
  * @apiVersion 1.0.0
- * @apiName getAllFeatures
+ * @apiName getScheduleByEstablishmentByUser
  * @apiGroup Schedule
  *
- * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * @apiDescription Return all the exist schedules by user and service.
  * 
  * @apiPermission Authorized users only
  * 
@@ -413,51 +506,82 @@ api.get('/lessons-by-type/:id', controller.getLessonsServices);
  */
 api.get('/:establishmentId/by-user/:userEstablishmentId/by-service/:servId', controller.getScheduleByEstablishmentByUser);
 /**
- * @api {get} /schedule/getFeatures Request All Active Features information
+ * @api {get} /schedule/by-services-day/:id Request all services by day
  * @apiVersion 1.0.0
- * @apiName getAllFeatures
+ * @apiName getServicesByDay
  * @apiGroup Schedule
  *
- * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * @apiDescription Return list of all services by day.
  * 
  * @apiPermission Authorized users only
  * 
- * @apiSuccess {Number} id              Unique id of the feature.
- * @apiSuccess {String} value           Value of the feature.
- * @apiSuccess {String} description     Description of the feature.
- * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
- * @apiSuccess {Date} insDate           Creation date of the feature.
- * @apiSuccess {String} insUser         Creation user of the feature.
- * @apiSuccess {Date} updDate           Update date of the feature.
- * @apiSuccess {String} updUser         Update user of the feature.
- * @apiSuccess {Date} delDate           Delete date of the feature.
- * @apiSuccess {String} delUser         Delete user of the feature.
+ * @apiParam {Number} id                Unique id of the service type.
+ * 
+ * @apiSuccess {Number} days: Array of days enabled for the lesson [0,0,0,0,0,0,1] (starts on monday, 0 inactive, 1 active)
+ * @apiSuccess {Number} disDate: null
+ * @apiSuccess {Number} disUser: null
+ * @apiSuccess {Number} disciplineId: null
+ * @apiSuccess {Number} disciplineName: "Masajes"
+ * @apiSuccess {Number} endDate: "18/05/2019"
+ * @apiSuccess {Number} endTime: "07:00:00"
+ * @apiSuccess {Number} establishmentId: 303
+ * @apiSuccess {Number} id: 315052
+ * @apiSuccess {Number} insDate: "2019-05-21T21:18:08.000Z"
+ * @apiSuccess {Number} insUser: 1
+ * @apiSuccess {Number} instructor: "Jose  chavez"
+ * @apiSuccess {Number} planDisponibilityId: null
+ * @apiSuccess {Number} referenceEndTime: null
+ * @apiSuccess {Number} referenceInstructor: 469345
+ * @apiSuccess {Number} referenceOcupancy: 10
+ * @apiSuccess {Number} referenceRoomId: 1227
+ * @apiSuccess {Number} referenceStartTime: null
+ * @apiSuccess {Number} roomType: "0"
+ * @apiSuccess {Number} showOnApp: "1"
+ * @apiSuccess {Number} special: ""
+ * @apiSuccess {Number} startDate: "18/05/2019"
+ * @apiSuccess {Number} startTime: "06:00:00"
+ * @apiSuccess {Number} status: "1"
+ * @apiSuccess {Number} type: "1"
+ * @apiSuccess {Number} untilDate: "2019-05-18T00:00:00.000Z"
+ * @apiSuccess {Number} updDate: null
+ * @apiSuccess {Number} updUser: null
  * 
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    [
  *      {
- *          "id":1,
- *          "name":"Dashboard",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":1,
- *          "shareModule":"N"
- *      },
- *      {
- *          "id":2,"name":"Clases",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":2,
- *          "shareModule":"N"
+ *          days: "[0,0,0,0,0,0,1]"
+ *          disDate: null
+ *          disUser: null
+ *          disciplineId: null
+ *          disciplineName: "Masajes"
+ *          endDate: "18/05/2019"
+ *          endTime: "07:00:00"
+ *          establishmentId: 303
+ *          id: 315052
+ *          insDate: "2019-05-21T21:18:08.000Z"
+ *          insUser: 1
+ *          instructor: "Jose  chavez"
+ *          planDisponibilityId: null
+ *          referenceEndTime: null
+ *          referenceInstructor: 469345
+ *          referenceOcupancy: 10
+ *          referenceRoomId: 1227
+ *          referenceStartTime: null
+ *          roomType: "0"
+ *          showOnApp: "1"
+ *          special: ""
+ *          startDate: "18/05/2019"
+ *          startTime: "06:00:00"
+ *          status: "1"
+ *          type: "1"
+ *          untilDate: "2019-05-18T00:00:00.000Z"
+ *          updDate: null
+ *          updUser: null
  *      },
  *      ...
  *    ]
- * @apiErrorExample {json} Features not found
+ * @apiErrorExample {json} lesson not found
  *    HTTP/1.1 404 Not Found
  * @apiErrorExample {json} Find error
  *    HTTP/1.1 500 Internal Server Error
@@ -576,6 +700,7 @@ api.get('/times-by-lesson/:lessonId', controller.getTimesEnablesByLesson);
  * 
  * @apiSuccess {String} msg     Success message.
  * @apiSuccess {String} title   Title success message.
+ * HASTA AQUI
  */
 api.put('/cancel-lesson/:id', controller.changeStatus);
 /**
