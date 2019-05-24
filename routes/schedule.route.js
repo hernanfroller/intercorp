@@ -10,7 +10,7 @@ const controller = require('../controllers/schedule.controller');
  * @apiName setLesson
  * @apiGroup Schedule
  *
- * @apiDescription Create a lesson that is visible from the calendar of the fitco solution.
+ * @apiDescription Create a lesson that is visible from the schedule of the fitco solution.
  * 
  * @apiPermission Authorized users only
  * 
@@ -71,7 +71,7 @@ api.post('/', controller.setLesson);
  */
 api.post('/:id/membership-lesson', controller.setMembershipSchedule);
 /**
- * @api {post} /schedule/lesson-record-and-membership Create Lesson records and Memberships
+ * @api {post} /schedule/lesson-record-and-membership Create a service scheduling
  * @apiVersion 1.0.0
  * @apiName addAndValidateMemberships
  * @apiGroup Schedule
@@ -86,9 +86,9 @@ api.post('/:id/membership-lesson', controller.setMembershipSchedule);
  * @apiParam {Number} lessonId                Unique id of the lesson
  * @apiParam {Number} occupancy:              Ocupancy of the lesson record
  * @apiParam {Number} romId:                  Unique id of the room
- * @apiParam {Number} scheduleDisciplineId    Unique id of the schedule discipline
+ * @apiParam {Number} scheduleDisciplineId    Unique id of the schedule or discipline
  * @apiParam {String} startTime               Start time of the lesson record
- * @apiParam {String} status                  Status of the lesson record ('0': con asistencia, '1': sin asistencia)
+ * @apiParam {String} status                  Status of the lesson record ('0': with assistance, '1': without assistance)
  * @apiParam {Number} userId:                 Unique id of the user
  * 
  * @apiSuccessExample {json} Success
@@ -106,7 +106,7 @@ api.post('/:id/membership-lesson', controller.setMembershipSchedule);
  */
 api.post('/lesson-record-and-membership', controller.addAndValidateMemberships);
 /**
- * @api {get} /schedule/by-establishment/:id Request All lesson by establishment
+ * @api {get} /schedule/by-establishment/:id Request all calendar lesson by establishment
  * @apiVersion 1.0.0
  * @apiName getScheduleByEstablishment
  * @apiGroup Schedule
@@ -115,9 +115,9 @@ api.post('/lesson-record-and-membership', controller.addAndValidateMemberships);
  * 
  * @apiPermission Authorized users only
  * 
- * @apiParam {Number} id                Unique id of the establishment.
+ * @apiParam {Number} id                                Unique id of the establishment
  * 
- * @apiSuccess {String} address: null
+ * @apiSuccess {String} address                         Address of the lesson
  * @apiSuccess {String} alert: "0"
  * @apiSuccess {Number} antifraud: null
  * @apiSuccess {Date} birthDate: null
@@ -642,51 +642,30 @@ api.get('/by-services-day/:id', controller.getServicesByDay);
  */
 api.get('/instructor-by-day/:id/:serviceId', controller.getInstructorByDay);
 /**
- * @api {get} /schedule/times-by-lesson/:lessonId Request times on a lesson
+ * @api {get} /schedule/times-by-lesson/:lessonId Request all avaible times on a lesson
  * @apiVersion 1.0.0
- * @apiName getAllFeatures
+ * @apiName getTimesEnablesByLesson
  * @apiGroup Schedule
  *
- * @apiDescription Return all the exist features of fitco solution, a feature is the establishment module active, this depends of the current payment plan that they belong
+ * @apiDescription Return all available hours of a lesson.
  * 
  * @apiPermission Authorized users only
  * 
- * @apiSuccess {Number} id              Unique id of the feature.
- * @apiSuccess {String} value           Value of the feature.
- * @apiSuccess {String} description     Description of the feature.
- * @apiSuccess {String} status          Status of the feature (Active:'1'/Inactive:'0').
- * @apiSuccess {Date} insDate           Creation date of the feature.
- * @apiSuccess {String} insUser         Creation user of the feature.
- * @apiSuccess {Date} updDate           Update date of the feature.
- * @apiSuccess {String} updUser         Update user of the feature.
- * @apiSuccess {Date} delDate           Delete date of the feature.
- * @apiSuccess {String} delUser         Delete user of the feature.
+ * @apiParam {Number} lessonId              Unique id of the establishment.
+ * 
+ * @apiSuccess {String} endTime             End time of the availability
+ * @apiSuccess {String} startTime           Start time of the availability
  * 
  * @apiSuccessExample {json} Success
  *    HTTP/1.1 200 OK
  *    [
  *      {
- *          "id":1,
- *          "name":"Dashboard",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":1,
- *          "shareModule":"N"
- *      },
- *      {
- *          "id":2,"name":"Clases",
- *          "description":null,
- *          "status":"1",
- *          "icon":null,
- *          "route":null,
- *          "menuId":2,
- *          "shareModule":"N"
- *      },
- *      ...
+ *          "startTime":"08:00:00",
+ *          "endTime":"09:00:00"
+ *      }
  *    ]
- * @apiErrorExample {json} Features not found
+ * 
+ * @apiErrorExample {json} Availability not found
  *    HTTP/1.1 404 Not Found
  * @apiErrorExample {json} Find error
  *    HTTP/1.1 500 Internal Server Error
