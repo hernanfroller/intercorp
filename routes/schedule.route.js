@@ -747,6 +747,36 @@ api.put('/lesson-update/:id', controller.lessonUpdate);
  */
 api.put('/unpaid/:id', controller.unpaidUpdate);
 api.delete('/:id/cancel-schedule/:membershipLessonId', controller.cancelMembershipSchedule);
+/**
+ * @api {post} /schedule/unpaid Create unpaid lesson
+ * @apiVersion 1.0.0
+ * @apiName saveUnpaid
+ * @apiGroup Schedule
+ *
+ * @apiDescription Create a unpaid lesson that is visible from the schedule of the fitco solution.
+ * 
+ * @apiPermission Authorized users only
+ * 
+ * @apiParam {Number} amount                    Amount of the unpaid lesson
+ * @apiParam {Number} insUser                   Unique id of the insert user
+ * @apiParam {Number} lessonRecordId            Unique id of the lesson record
+ * @apiParam {String} status                    Status of the unpaid lesson ('0' inactive, '1' active)
+ * @apiParam {String} title                     Title of the unpaid lesson
+ * @apiParam {Number} userEstablishmentId       Unique id of the user establishment
+ * 
+ * @apiSuccessExample {json} Success
+ *    HTTP/1.1 200 OK
+ *    {
+ *      "msg":"GLOBAL.OK",
+ *      "title":"GLOBAL.EXITO"
+ *    }
+ * 
+ * @apiErrorExample {json} Schedule not found
+ *    HTTP/1.1 404 Not Found
+ * @apiErrorExample {json} Find error
+ *    HTTP/1.1 500 Internal Server Error
+ * 
+ */
 api.post('/unpaid', controller.saveUnpaid);
 api.delete('/clean-lesson-record/:id', controller.cleanLessonRecord);
 api.delete('/delete/lesson/:id', controller.deleteLesson);
