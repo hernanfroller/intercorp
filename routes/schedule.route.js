@@ -780,7 +780,6 @@ api.delete('/:id/cancel-schedule/:membershipLessonId', controller.cancelMembersh
 api.post('/unpaid', controller.saveUnpaid);
 api.delete('/clean-lesson-record/:id', controller.cleanLessonRecord);
 api.delete('/delete/lesson/:id', controller.deleteLesson);
-api.get('/lesson-app/:id/:serviceId', controller.getLessonsForApp);
 api.get('/:id/by-calendar', controller.getLessonRecordId);
 
 api.post('/calendar-day-lock', controller.setDayLock);
@@ -811,5 +810,12 @@ api.put('/:id/calendar-day-lock', controller.updDayLock);
 api.delete('/:id/calendar-day-lock', controller.delDayLockForDate);
 api.get('/:id/calendar-day-lock', controller.getDayLock);
 api.get('/calendar-day-lock', controller.getDayLockForDate);
+
+
+api.get('/lesson-app/:id/:serviceId', controller.getServiceLessonsForApp);
+
+api.get('/:id/by-establishment', controller.getDisciplinesbyEstablishment);
+
+api.get('/:id/by-establishment/:search', controller.getDisciplinesbyEstablishment);
 
 module.exports = api;

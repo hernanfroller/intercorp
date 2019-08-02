@@ -1,7 +1,7 @@
 {
-  "name": "fitco-reservation-microservice",
+  "name": "fitco-schedule-microservice",
   "version": "1.0.0",
-  "description": "Fitco Reservation Microservice",
+  "description": "Fitco schedule Microservice",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,8 +19,8 @@
   "apidoc": {
     "name": "Reservation API documentation",
     "version": "1.0.0",
-    "description": "Microservice for reserve class and service",
-    "title": "Fitco Reservevatio Microservice",
+    "description": "Microservice for reserve schedule",
+    "title": "Fitco schedule Microservice",
     "url": "https://api.fitcoapp.net",
     "template": {
       "forceLanguage": "en"

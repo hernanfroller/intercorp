@@ -1105,7 +1105,25 @@ function deleteLesson(req, res, next) {
     });
 }
 
-function getLessonsForApp(req, res, next) {
+
+function getLessonRecordId(req, res, next) {
+    const id = req.params.id;
+    const type = req.query.type == undefined || req.query.type == null ? '0' : req.query.type;
+    services.lessons.getLessonRecordId(id, type).then(rows => {
+        res.status(200);
+        return res.json(rows);
+    })
+    .catch(err => {
+        console.error('lessonrecoirdId ', err)
+        res.status(400);
+        return res.json({
+            msg: 'GLOBAL.ERROR',
+            title: 'GLOBAL.ERROR_TITULO'
+        });
+    });
+}
+
+function getServiceLessonsForApp (req, res, next) {
     const data = {
         establisment: req.params.id,
         serviceId: req.params.serviceId,
@@ -1114,18 +1132,18 @@ function getLessonsForApp(req, res, next) {
         time: false,
         admin: req.query.admin != undefined ? req.query.admin : false
     };
-
-    services.lessons.getLessonInstructors(data)
+    //Obtengo los instructores por servicio en el dia dado
+    services.schedule.getLessonInstructorsForApp(data)
         .then(lessons => {
-            if (services.transversal.ifArrayNotEmptyOrNull(lessons)) {
+            if (lessons.length > 0) {
                 const date = req.query.date;
-                supportSchedule.getLessonsForApp(lessons, req.params.serviceId, date)
+                services.schedule.getServiceLessonsForApp(lessons, req.params.serviceId, date)
                     .then(structure => {
                         return res.json(structure)
 
                     })
                     .catch(err => {
-                        console.error('err ', err);
+                        console.log(err);
                         res.status(400);
                         return res.json({
                             msg: 'GLOBAL.ERROR',
@@ -1144,7 +1162,6 @@ function getLessonsForApp(req, res, next) {
 
         })
         .catch(err => {
-            console.error('err ', err);
             res.status(400);
             return res.json({
                 msg: 'GLOBAL.ERROR',
@@ -1153,21 +1170,46 @@ function getLessonsForApp(req, res, next) {
         });
 }
 
-function getLessonRecordId(req, res, next) {
-    const id = req.params.id;
-    const type = req.query.type == undefined || req.query.type == null ? '0' : req.query.type;
-    services.lessons.getLessonRecordId(id, type).then(rows => {
-        res.status(200);
-        return res.json(rows);
-    })
-    .catch(err => {
-        console.error('lessonrecoirdId ', err)
-        res.status(400);
-        return res.json({
-            msg: 'GLOBAL.ERROR',
-            title: 'GLOBAL.ERROR_TITULO'
-        });
-    });
+async function getDisciplinesbyEstablishment (req, res, next) {
+    const id = req.params.id; // del establecimiento;
+    const params = services.transversal.appParameters(req.query);
+    const callBy = "byEstablishment";
+    const status = req.query.status;
+    const cbp = req.query.cbp;
+
+    try {
+        let response = await services.schedule.getDisciplines(id, params, callBy, status, cbp);
+        return res.json(response);
+    } catch(err) {
+        res.status(404);
+        return res.json(err);
+    }
+}
+
+async function getSearchDisciplinesbyEstablishment (req, res, next) {
+    const id = req.params.id; // del establecimiento;
+    const search = req.params.search;
+    const params = services.transversal.appParameters(req.query);
+    const callBy = "byEstablishment";
+    const status = req.query.status;
+    const cbp = req.query.cbp;
+
+    try {
+        let response = await services.schedule.getDisciplines(id, params, callBy, status, cbp);
+        return res.json(response);
+    } catch(err) {
+        res.status(404);
+        return res.json(err);
+    }
+}
+
+async function test (req, res) {
+    try {
+        let memberships = await services.memberships.getMembershipsByUser(req.params.userId, req.params.lessonRecordId);
+        return res.status(200).json(memberships);
+    } catch (error) {
+        return res.status(400).json(error);
+    }
 }
 
 module.exports = {
@@ -1195,6 +1237,7 @@ module.exports = {
     saveUnpaid,
     cleanLessonRecord,
     deleteLesson,
-    getLessonsForApp,
-    getLessonRecordId
+    getLessonRecordId,
+    getServiceLessonsForApp,
+    getDisciplinesbyEstablishment
 }
