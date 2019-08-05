@@ -1195,7 +1195,7 @@ async function getSearchDisciplinesbyEstablishment (req, res, next) {
     const cbp = req.query.cbp;
 
     try {
-        let response = await services.schedule.getDisciplines(id, params, callBy, status, cbp);
+        let response = await services.schedule.getSearchDisciplines(id, params, callBy, status, cbp, search);
         return res.json(response);
     } catch(err) {
         res.status(404);
@@ -1239,5 +1239,6 @@ module.exports = {
     deleteLesson,
     getLessonRecordId,
     getServiceLessonsForApp,
-    getDisciplinesbyEstablishment
+    getDisciplinesbyEstablishment,
+    getSearchDisciplinesbyEstablishment
 }

@@ -816,6 +816,6 @@ api.get('/lesson-app/:id/:serviceId', controller.getServiceLessonsForApp);
 
 api.get('/:id/by-establishment', controller.getDisciplinesbyEstablishment);
 
-api.get('/:id/by-establishment/:search', controller.getDisciplinesbyEstablishment);
+api.get('/:id/by-establishment/:search', controller.getSearchDisciplinesbyEstablishment);
 
 module.exports = api;

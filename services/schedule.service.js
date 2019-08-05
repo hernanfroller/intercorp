@@ -242,6 +242,60 @@ function getDisciplines(id, params, callBy, status, cbp) {
     });
 }
 
+function getSearchDisciplines(id, params, callBy, status, cbp, search) {
+    return new Promise(function (result, reject) {
+        let sentence = `
+            select disciplines.id AS id,disciplines.type  AS type,disciplines.name AS name,disciplines.description AS description,
+                disciplines.establishmentId AS establishmentId,disciplines.status AS status,disciplines.byDefault AS byDefault,
+                    disciplines.color AS color,date_format(disciplines.insDate,'%d-%m-%Y') AS insDate,
+                        disciplines.insUser AS insUser,disciplines.updDate AS updDate,disciplines.updUser AS updUser,
+                            disciplines.disDate AS disDate,disciplines.disUser AS disUser,
+                                establishments.name AS establishmentName,plan_discipline.planId AS planId,
+                                    plan_discipline.sessions AS sessions, disciplines.time as time, disciplines.price as price
+                                        from disciplines join establishments on establishments.id = disciplines.establishmentId
+                                            left join plan_discipline on plan_discipline.disciplineId = disciplines.id
+                                            WHERE establishments.id IN (${id}) and disciplines.name like '${search}%' and (ISNULL(disciplines.disUser) or ISNULL(disciplines.disDate)) ${status == 'ALL' ? '' : status ? `
+                                            and disciplines.status = '${status}'` : ''}
+                            `;
+
+        if (params.typeD.toUpperCase() == 'ALL') {
+            sentence = sentence + `group by disciplines.id order by disciplines.${params.orderby} ${params.order}`;
+        } else {
+            sentence = sentence + ` AND disciplines.type = '${params.typeD}'
+                                                    group by disciplines.id order by disciplines.${params.orderby} ${params.order}`;
+
+        }
+
+        if (params.cbp != "all" && params.cbp != "ALL") {
+            sentence = sentence + ` limit ${params.cbp} OFFSET ${(params.cbp * (params.page - 1))} `;
+        }
+
+        db.mysql.reader.query(sentence, function (err, rows) {
+            if (err) {
+                return reject({
+                    msg: "GLOBAL.ERROR_DB",
+                    title: "ERROR_DB_BODY"
+                });
+            } else {
+                if (cbp == 'ALL' || cbp == 'all') {
+                    return result(rows);
+                } else {
+                    getCountAll(id, callBy, params.typeD, status).then((result) => {
+                        res.setHeader("X-Item", rows.length);
+                        res.setHeader("X-Total-Item", result);
+                        res.setHeader("X-Offset", params.cbp * (params.page - 1));
+                        res.setHeader("X-Page", params.page);
+                        res.setHeader("Access-Control-Expose-Headers", "X-Item, x-Total-Item, X-Offset, X-Page, X-To ");
+                        res.json(rows);
+                    }).catch((err) => {
+                        return reject(err);
+                    })
+                }
+            }
+        });
+    });
+}
+
 function getCountAll(id, callBy, type, stauts) {
     return new Promise(function (resolve, reject) {
         var sentence = "";
@@ -595,5 +649,6 @@ module.exports = {
     calculateEnabledLessons,
     getDisciplines,
     getLessonInstructorsForApp,
-    getServiceLessonsForApp
+    getServiceLessonsForApp,
+    getSearchDisciplines
 }
