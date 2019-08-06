@@ -251,7 +251,7 @@ function getSearchDisciplines(id, params, callBy, status, cbp, search) {
                         disciplines.insUser AS insUser,disciplines.updDate AS updDate,disciplines.updUser AS updUser,
                             disciplines.disDate AS disDate,disciplines.disUser AS disUser,
                                 establishments.name AS establishmentName,plan_discipline.planId AS planId,
-                                    plan_discipline.sessions AS sessions, disciplines.time as time, disciplines.price as price
+                                    plan_discipline.sessions AS sessions, disciplines.time AS time, disciplines.price as price
                                         from disciplines join establishments on establishments.id = disciplines.establishmentId
                                             left join plan_discipline on plan_discipline.disciplineId = disciplines.id
                                             WHERE establishments.id IN (${id}) and disciplines.name like '%${search}%' and (ISNULL(disciplines.disUser) or ISNULL(disciplines.disDate)) ${status == 'ALL' ? '' : status ? `
