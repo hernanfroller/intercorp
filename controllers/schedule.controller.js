@@ -202,7 +202,7 @@ function setMembershipSchedule(req, res, next) {
                                                                 });
 
                                                             }
-                                                            mailerLesson.scheduleSendEmial(userId, id, lang);
+                                                            //mailerLesson.scheduleSendEmial(userId, id, lang);
                                                             auxCan = true;
                                                             res.status(200);
                                                             return res.json({
@@ -229,7 +229,7 @@ function setMembershipSchedule(req, res, next) {
                                                     body.membershipId = m.mId;
                                                     services.lessons.addMembershipLesson(body)
                                                         .then(success => {
-                                                            mailerLesson.scheduleSendEmial(userId, id, lang);
+                                                            //mailerLesson.scheduleSendEmial(userId, id, lang);
                                                             let status = '4';
                                                             services.lessons.blockInstructorLessons(id, status)
                                                                 .then(success => {})
@@ -339,6 +339,247 @@ function addAndValidateMemberships(req, res, next) {
     }
 
 };
+
+function membershipAddSchedule(req, res, next) {
+    let id = req.params.id;
+    let body = {
+        lessonRecordId: parseInt(id),
+        membershipId: 0,
+        status: req.body.status != undefined || req.body.status != null ? req.body.status : '0',
+        insUser: req.body.userId
+    };
+    if (req.query['admin']) {
+        body.status = '1';
+    }
+    services.lessons.getCategoryClients(req.body.userId).then(function (categoryData) {
+
+        services.memberships.getMembershipsByUser(req.body.userId, id)
+            .then(function (memberships) {
+                if (memberships.length < 1) {
+                    res.status(400);
+                    return res.json({
+                        msg: 'GLOBAL.ERROR',
+                        title: 'RESERVES.ERROR_MEMBERSHIPS',
+                        lessonRecordId: id
+                    });
+                } else {
+                    let auxCan = false;
+                    for (let m of memberships) {
+                        if (m.alradyAssist > 0) {
+                            services.lessons
+                                .updateReserveStatusFromBiometric(id, m.mId)
+                                .then(upt => {
+                                    auxCan = true;
+                                    res.status(200);
+                                    return res.json({
+                                        msg: 'GLOBAL.OK',
+                                        title: 'GLOBAL.EXITO'
+                                    });
+                                })
+                                .catch(err => {
+                                    res.status(400);
+                                    return res.json({
+                                        msg: 'GLOBAL.ERROR',
+                                        title: 'RESERVES.ERROR_RESERVES'
+                                    });
+                                });
+                        } else {
+                            services.lessons
+                                .getLessonInfo(id, categoryData)
+                                .then(function (lessonResp) {
+                                    const lesson = lessonResp.lesson;
+                                    const lessonDate = lesson.dateLesson;
+                                    services.lessons.getStatusCategoryByEstablishment(id).then(establishment => {
+                                        if (lesson.status == 1 || lesson.status == 2) {
+                                            res.status(400);
+                                            return res.json({
+                                                msg: 'GLOBAL.ERROR',
+                                                title: 'RESERVES.ERROR_CLOSED'
+                                            });
+                                        } else if (lesson.canPass == 0) {
+                                            res.status(400);
+                                            return res.json({
+                                                msg: 'GLOBAL.ERROR',
+                                                title: 'RESERVES.ERROR_OCCUPANCY'
+                                            });
+                                        } else if (lesson.dateLimit == 0 && establishment.statusCategoryClient == 'Y') {
+                                            res.status(400);
+                                            return res.json({
+                                                msg: 'GLOBAL.ERROR',
+                                                title: 'RESERVES.ERROR_LIMIT_RESERVE'
+                                            });
+                                        }
+                                        if (memberships.length < 2) {
+                                            if (m.typeSessions == '0' && m.sessions >= (m.planSessions + m.giftSessions)) {
+                                                res.status(400);
+                                                services.lessons.cleanLessonRecord(id)
+                                                    .then(success => {
+                                                        return res.json({
+                                                            msg: 'GLOBAL.ERROR',
+                                                            title: 'RESERVES.ERROR_SESSIONS'
+                                                        });
+                                                    })
+                                                    .catch(err => {
+                                                        return res.json({
+                                                            msg: 'GLOBAL.ERROR',
+                                                            title: 'RESERVES.ERROR_SESSIONS'
+                                                        });
+                                                    });
+                                            } else if (m.typeSessions == '1' && m.sessionUsedDiscipline >= m.sessionsDiscipline) {
+                                                res.status(400);
+                                                services.lessons.cleanLessonRecord(id)
+                                                    .then(success => {
+                                                        return res.json({
+                                                            msg: 'GLOBAL.ERROR',
+                                                            title: 'RESERVES.ERROR_SESSION_LESSON'
+                                                        });
+                                                    })
+                                                    .catch(err => {
+                                                        return res.json({
+                                                            msg: 'GLOBAL.ERROR',
+                                                            title: 'RESERVES.ERROR_SESSION_LESSON'
+                                                        });
+                                                    });
+                                            } else {
+                                                if (body.membershipId == 0) {
+                                                    body.membershipId = m.mId;
+                                                    services.lessons
+                                                        .addMembershipLesson(body)
+                                                        .then(success => {
+                                                            let status = '3';
+                                                            services.lessons
+                                                                .blockInstructorLessons(id, status)
+                                                                .then(success => {})
+                                                                .catch(err => {
+                                                                    console.error('\n', err, '\n');
+                                                                    return res.json({
+                                                                        msg: 'GLOBAL.ERROR',
+                                                                        title: 'ERROR_DB_BODY'
+                                                                    });
+                                                                });
+
+                                                            if (m.updateStartDate == '1') {
+
+                                                                const updateMembership = {
+                                                                    planId: m.planId,
+                                                                    date: lessonDate,
+                                                                    membershipId: m.mId
+                                                                }
+
+                                                                services.lessons.updateMembershipStartDate(updateMembership).then(
+                                                                    success => {
+
+                                                                    }).catch(err => {
+                                                                    console.error("\n", err, "\n");
+                                                                    return res.json({
+                                                                        msg: 'GLOBAL.ERROR',
+                                                                        title: 'ERROR_DB_BODY'
+                                                                    })
+                                                                });
+
+                                                            }
+                                                            //services.mailer.scheduleSendEmial(req.body.userId,id);
+                                                            auxCan = true;
+                                                            res.status(200);
+                                                            return res.json({
+                                                                msg: 'GLOBAL.OK',
+                                                                title: 'GLOBAL.EXITO'
+                                                            });
+                                                        })
+                                                        .catch(err => {
+                                                            console.error('\n', err, '\n');
+                                                            return res.json({
+                                                                msg: 'GLOBAL.ERROR',
+                                                                title: 'ERROR_DB_BODY'
+                                                            });
+                                                        });
+                                                }
+                                            }
+                                        } else {
+                                            if (
+                                                (m.typeSessions == '1' && m.sessionUsedDiscipline < m.sessionsDiscipline) ||
+                                                (m.typeSessions == '0' && m.sessions < (m.planSessions + m.giftSessions)) ||
+                                                m.typeSessions == '2'
+                                            ) {
+                                                if (body.membershipId == 0) {
+                                                    body.membershipId = m.mId;
+                                                    suportLesson
+                                                        .addMembershipLesson(body)
+                                                        .then(success => {
+                                                            //mailerLesson.scheduleSendEmial(req.body.userId,id);
+                                                            let status = '4';
+                                                            suportLesson
+                                                                .blockInstructorLessons(id, status)
+                                                                .then(success => {})
+                                                                .catch(err => {
+                                                                    console.error('\n', err, '\n');
+                                                                    return res.json({
+                                                                        msg: 'GLOBAL.ERROR',
+                                                                        title: 'ERROR_DB_BODY'
+                                                                    });
+                                                                });
+                                                            if (m.updateStartDate == '1') {
+
+                                                                const updateMembership = {
+                                                                    planId: m.planId,
+                                                                    date: lessonDate,
+                                                                    membershipId: m.mId
+                                                                }
+
+                                                                suportLesson.updateMembershipStartDate(updateMembership).then(
+                                                                    success => {
+
+                                                                    }).catch(err => {
+                                                                    console.error("\n", err, "\n");
+                                                                    return res.json({
+                                                                        msg: 'GLOBAL.ERROR',
+                                                                        title: 'ERROR_DB_BODY'
+                                                                    })
+                                                                });
+
+                                                            }
+                                                            auxCan = true;
+                                                            res.status(200);
+                                                            return res.json({
+                                                                msg: 'GLOBAL.OK',
+                                                                title: 'GLOBAL.EXITO'
+                                                            });
+                                                        })
+                                                        .catch(err => {
+                                                            console.error('\n', err, '\n');
+                                                            res.status(400);
+                                                            return res.json({
+                                                                msg: 'GLOBAL.ERROR',
+                                                                title: 'ERROR_DB_BODY'
+                                                            });
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    });
+                                })
+                                .catch(function (err) {
+                                    console.error('\n', err, '\n');
+                                    res.status(400);
+                                    return res.json({
+                                        msg: 'GLOBAL.ERROR',
+                                        title: 'ERROR_DB_BODY'
+                                    });
+                                });
+                        }
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.error(err);
+                res.status(400);
+                res.json({
+                    msg: 'GLOBAL.ERROR',
+                    title: 'ERROR_DB_BODY'
+                });
+            });
+    });
+}
 
 function setDayLock (req, res, next) {
     services.schedule.setDayLockPromise(req.body)
