@@ -376,7 +376,8 @@ function getLessonInstructorsForApp(data) {
     return new Promise(function (resolve, reject) {
         const groupBy = data.group == 1 ? data.group : '0';
         const addTime = data.time == true ? true : false;
-        let showOnApp = data.admin == false ? ` AND lessons.showOnApp = '1'` : ``
+        let showOnApp = data.admin == false ? ` AND lessons.showOnApp = '1'` : ``;
+        let byId = data.lessonId ? ` AND lessons.id = ${data.lessonId}` : ``;
  
         let sql = `select lessons.id, disciplines.name as name, disciplines.price, disciplines.id as serviceId,
                         lessons.referenceInstructor as intructorId, lessons.startTime, lessons.endTime,
@@ -394,6 +395,7 @@ function getLessonInstructorsForApp(data) {
                         and SUBSTRING(lessons.days, DAYOFWEEK('${data.date}') * 2, 1) = '1'
                         and lesson_discipline.disciplineId = ${data.serviceId}  
                             ${showOnApp}
+                            ${byId}
                         `;
         sql = addTime ? sql + ` and ADDTIME(time('${data.date}'),'00:00:01') BETWEEN
          lessons.startTime and lessons.endTime  

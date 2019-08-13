@@ -1371,7 +1371,8 @@ function getServiceLessonsForApp (req, res, next) {
         date: req.query.date,
         group: '0',
         time: false,
-        admin: req.query.admin != undefined ? req.query.admin : false
+        admin: req.query.admin != undefined ? req.query.admin : false,
+        lessonId: req.query.lessonId && req.query.lessonId != undefined ? req.query.lessonId : false
     };
     //Obtengo los instructores por servicio en el dia dado
     services.schedule.getLessonInstructorsForApp(data)
