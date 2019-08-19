@@ -4,6 +4,7 @@ const db = require('../database');
 const moment = require('moment');
 const services = require('../services');
 const config = require('../bin/config');
+const memberships = require('./memberships.service');
 
 function validLessonBeforeToCreatePromise(body) {
     return new Promise(function (resolve, reject) {
@@ -236,13 +237,13 @@ function addMembershipLesson (body) {
                 if (err) {
                     return reject(err);
                 } else {
-                    services.memberships.getUserEstablishment(body.membershipId)
+                    memberships.getUserEstablishment(body.membershipId)
                         .then(user => {
-                            services.memberships.updateAfterNewMembership(body.membershipId).then(response => {
+                            memberships.updateAfterNewMembership(body.membershipId).then(response => {
 
-                                services.memberships.updateStatusUserEstablishment(user).then(updateResponse => {}).catch(error => {});
+                                memberships.updateStatusUserEstablishment(user).then(updateResponse => {}).catch(error => {});
                                 if(body.typeSessions != config.planTypeSessions.unlimited){
-                                    services.memberships.checkMembershipsSessionsToSendEmail(body);
+                                    memberships.checkMembershipsSessionsToSendEmail(body);
                                 }
                                 
                             }).catch(error => {});
@@ -378,18 +379,23 @@ function addLessonRecord(body) {
     return new Promise(function (result, reject) {
         const sentence = `insert into lesson_record set ?`;
         db.mysql.writter.query(sentence, body, function (err, rows) {
-            db.mysql.writter.query(
-                `insert into personal_lessons_record (personal_lessons_record.lessonRecordId, personal_lessons_record.instructorId) values (${
-          rows.insertId
-        }, ${body.instructorId});`,
-                function (err, prow) {
-                    if (err) {
-                        return reject(err);
-                    } else {
-                        return result(rows);
+            if (err) {
+                console.log(err);
+                return reject(err);
+            } else {
+                db.mysql.writter.query(
+                    `insert into personal_lessons_record (personal_lessons_record.lessonRecordId, personal_lessons_record.instructorId) values (${
+              rows.insertId
+            }, ${body.instructorId});`,
+                    function (err, prow) {
+                        if (err) {
+                            return reject(err);
+                        } else {
+                            return result(rows);
+                        }
                     }
-                }
-            );
+                );
+            }
         });
     });
 }
