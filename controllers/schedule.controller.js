@@ -503,12 +503,12 @@ function membershipAddSchedule(req, res, next) {
                                             ) {
                                                 if (body.membershipId == 0) {
                                                     body.membershipId = m.mId;
-                                                    suportLesson
+                                                    services.lessons
                                                         .addMembershipLesson(body)
                                                         .then(success => {
                                                             //mailerLesson.scheduleSendEmial(req.body.userId,id);
                                                             let status = '4';
-                                                            suportLesson
+                                                            services.lessons
                                                                 .blockInstructorLessons(id, status)
                                                                 .then(success => {})
                                                                 .catch(err => {
@@ -526,7 +526,7 @@ function membershipAddSchedule(req, res, next) {
                                                                     membershipId: m.mId
                                                                 }
 
-                                                                suportLesson.updateMembershipStartDate(updateMembership).then(
+                                                                services.lessons.updateMembershipStartDate(updateMembership).then(
                                                                     success => {
 
                                                                     }).catch(err => {
