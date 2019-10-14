@@ -1,37 +1,22 @@
 {
-  "name": "fitco-schedule-microservice",
+  "name": "intercorp-customer-microservice",
   "version": "1.0.0",
-  "description": "Fitco schedule Microservice",
+  "description": "Customer Microservice",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/www"
   },
-  "author": "Fitco S.A.C",
+  "author": "Hernan Fernandez Roller",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "dotenv": "^8.0.0",
     "express": "^4.16.4",
     "log4js": "^4.0.2",
+    "mathjs": "^6.2.3",
     "moment": "^2.24.0",
-    "mysql": "^2.16.0",
-    "sendgrid": "^5.2.3"
-  },
-  "apidoc": {
-    "name": "Reservation API documentation",
-    "version": "1.0.0",
-    "description": "Microservice for reserve schedule",
-    "title": "Fitco schedule Microservice",
-    "url": "https://api.fitcoapp.net",
-    "template": {
-      "forceLanguage": "en"
-    },
-    "order": [
-      "Lesson",
-      "Department"
-    ],
-    "footer": {
-      "title": "Contact",
-      "filename": "/templates/apidocs/footer.md"
-    }
+    "pg": "^7.12.1",
+    "sequelize": "^5.8.6",
+    "sequelize-cli": "^5.4.0"
   }
 }

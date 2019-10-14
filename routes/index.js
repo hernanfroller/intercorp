@@ -2,8 +2,8 @@
 
 const express = require('express');
 const api = express.Router();
-const schedule = require('./schedule.route');
+const customer = require('./customer.route');
 
-api.use('/', schedule);
+api.use('/', customer);
 
 module.exports = api;

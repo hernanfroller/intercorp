@@ -1,0 +1,9 @@
+{
+    "development": {
+      "username": "comu",
+      "password": "comu-12345",
+      "database": "comusys",
+      "host": "comu.czqqudh18myc.us-east-2.rds.amazonaws.com",
+      "dialect": "postgres"
+    }
+  }

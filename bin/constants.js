@@ -1,64 +1,7 @@
 'use strict'
 
 module.exports = {
-    //GENERIC CHARACTER CONSTANTS
-    EMPTY_CHARACTER: '',
-    UPPERCASE_MALE_GENDER: 'M',
-    CHAR_ZERO: '0',
-    STATUS_APP_ACTIVE: 'Y',
-    STATUS_APP_DESACTIVE: 'N',
-    LESSON_TYPE: {
-        NORMAL: '0',
-        SCHEDULE: '1'
-    },
-
-    //SYSTEM NUMERIC CONSTANTS
-    NUMBER_ZERO: 0,
-    NUMBER_ONE: 1,
-    NUMBER_TEN: 10,
-    SESSION_PERCENT: 0.25,
-    ERROR_FOREIGN_KEY_CONSTRAINT: 1451,
-
-    //SYSTEM STRING CONSTANTS
-    STR_FITCO: 'Fitco',
-    STR_REBOOT: 'reboot',
-    STR_SUPER_USER: 'Super Usuario',
-    STR_UPPERCASE_ABBREVIATION_SPANISH_LANG: 'ES',
-    STR_LOWERCASE_ABBREVIATION_IDENTIFIER: 'id',
-    STR_LOWECASE_ABBREVIATION_DESCENDANT: 'desc',
-    STR_NOT_SESSIONS_NOTIFICATION: 'NOTIFICACIÓN: Te has quedado sin sesiones',
-    STATUS_ACTIVE: '1',
-    STATUS_INACTIVE: '0',
-    MAILER_SENDER: 'no-reply@fitcoconnect.com',
-
-    //SYSTEM MESAGGE CONSTANTS
-    MSG_EXPIRED_TOKEN: 'El token ha expirado',
-    MSG_INVALID_TOKEN: 'Invalid Token',
-    MSG_ITEM_NOT_FOUND: 'items no encontrado',
-
-    //SYSTEM CONFIG OBJECTS
-    LESSON_TYPE_LIMIT: {
-        PREVIUS_TIME: '1',
-        MAX_DAYS: '2'
-    },
-    LESSON_STATUS: {
-        DICTATED: '1',
-        NOT_DICTATED: '0',
-        CANCELED: '2'
-    },
-    AUTOMATIC_EMAIL_TYPE: {
-        SEVEN_DAYS_EXPIRATION:  1,
-        PASSWORD_RECOVERY: 2,
-        RESERVED_CLASS: 3,
-        BIRTHDAY: 4,
-        NEW_USER: 5,
-        INVITATION_RENEW: 6,
-        TEST_CLASS: 7,
-        NEW_MEMBERSHIP: 8,
-        WITHOUT_ASSISTANCE: 9,
-        PAYMENT_REMINDER: 10,
-        SUCCESS_WAITING_LIST: 11,
-        SESSIONS_TO_FINISH: 12,
-        SESSIONS_FINISHED: 13
-    }
+    ERROR_CLIENT_MSG: "Disculpe, no se pudo completar la solicitud. Intentelo mas tarde.",
+    ERROR_MSG: "Disculpe, no se pudo completar la solicitud.",
+    PERU_AVERAGE_LIFE: 80
 }
